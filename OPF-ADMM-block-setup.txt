@@ -1,0 +1,69 @@
+#PYTHON 3.5.4 install 
+# no python 3.5.2. // PYPOWER > 2.7 3.6 <
+
+
+$ sudo apt-get install build-essential checkinstall
+$ sudo apt-get install libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev
+
+cd /usr/src
+wget https://www.python.org/ftp/python/3.5.4/Python-3.5.4.tgz
+
+sudo tar xzf Python-3.5.4.tgz
+cd Python-3.5.4
+sudo ./configure --enable-optimizations
+sudo make altinstall
+
+~~ python3.5 -V
+cd ..
+
+
+
+#Venv for python
+(you need virtualenv and pip packages)
+
+python3.5 -m venv py354
+source py354/bin/activate
+python --version
+
+# PYPOWER
+
+pip install PYPOWER
+pip install --upgrade pip
+pip install numpy scipy matplotlib ipython jupyter pandas sympy nose
+pip install -U numpy==1.11.0 (recommended)
+
+(test)
+pf -c case14
+opf -c case14
+python centralized/OPF-ADMM/asyncADMM_acopf.py
+
+#Ethereum rpc
+#recommended versions
+
+pip install --pre ethereum==v1.0.8 
+pip install --pre web3==v4.2.1
+pip install --pre ethjsonrpc==v0.3.0
+pip install --pre ethereum-rpc-client==v0.4.4
+
+~ python OPFblock/asyncADMM_acopf.py
+
+(Issues)
+
+assert sha3('').encode('hex') == 'c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470'
+AttributeError: 'bytes' object has no attribute 'encode'
+
+Comment in /py354/lib/python3.5/site-packages/ethereum/utils.py -------> line 103
+
+
+TypeError: 'numpy.float64' object cannot be interpreted as an integer!! in ext2int
+
+OPFblock/pypower/ext2int.py
+
+line112 shape=(max(ppc["bus"][:, BUS_I]) + 1, 1))
+-->     shape=(max(ppc["bus"][:, BUS_I]).astype(int) + 1, 1))
+
+
+
+
+
+
